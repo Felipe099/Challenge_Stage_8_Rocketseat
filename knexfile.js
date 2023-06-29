@@ -6,6 +6,9 @@ module.exports = {
         connection: {
             filename: path.resolve(__dirname, 'src', 'database', 'database.db'),
         },
+        pool: {
+            afterCreate: (conn, cb) => conn.run('PRAGMA foreign_keys = ON', cb), // USADO para determinar as chaves estrangeiras e habilitar apagar em CASCADE
+        },
         migrations: {
             directory: path.resolve(
                 __dirname,
