@@ -1,4 +1,4 @@
-const { compare, hash } = require('bcryptjs');
+const { hash, compare } = require('bcryptjs');
 const AppError = require('../utils/AppError');
 const sqliteConnection = require('../database/sqlite');
 
@@ -60,7 +60,7 @@ class UsersController {
         if (password && old_password) {
             const checkOldPassword = await compare(old_password, user.password);
 
-            if (checkOldPassword) {
+            if (!checkOldPassword) {
                 throw new AppError('Senha antiga não confere');
             }
         }
