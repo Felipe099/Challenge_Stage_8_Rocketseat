@@ -6,13 +6,12 @@ const AppError = require('./utils/AppError');
 
 const routes = require('./routes');
 
+migrationsRun();
+
 const app = express();
 app.use(express.json());
 
 app.use(routes);
-
-migrationsRun()
-
 
 app.use((error, requeste, response, next) => {
     if (error instanceof AppError) {

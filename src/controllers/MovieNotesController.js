@@ -49,10 +49,14 @@ class MovieNotesController {
     async index(request, response) {
         const { title, user_id } = request.query;
 
+
         const movie_notes = await knex('movie_notes')
             .where({ user_id })
             .whereLike('title', `%${title}%`)
             .orderBy('title');
+
+
+            console.log(title)
 
         const userTags = await knex('movie_tags').where({ user_id });
         const notesWithTags = movie_notes.map((note) => {
