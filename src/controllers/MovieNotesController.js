@@ -4,7 +4,7 @@ const AppError = require('../utils/AppError');
 class MovieNotesController {
     async create(request, response) {
         const { title, description, rating, tag } = request.body;
-        const { user_id } = request.params;
+        const user_id = request.user.id;
 
         if (rating <= 0 || rating > 5) {
             throw new AppError(
@@ -24,7 +24,7 @@ class MovieNotesController {
             user_id,
         });
 
-        response.json();
+        return response.json();
     }
 
     async show(request, response) {
@@ -43,11 +43,12 @@ class MovieNotesController {
 
         await knex('movie_notes').where({ id }).delete();
 
-        response.json();
+        return response.json();
     }
 
     async index(request, response) {
-        const { title, user_id } = request.query;
+        const { title } = request.query;
+        const user_id = request.user.id;
 
 
         const movie_notes = await knex('movie_notes')
