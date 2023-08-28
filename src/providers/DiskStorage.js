@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const uploadConfig = require('../config/upload');
+const uploadConfig = require('../configs/upload');
 
 class DiskStorage {
     async saveFile(file) {
@@ -8,8 +8,10 @@ class DiskStorage {
             path.resolve(uploadConfig.TMP_FOLDER, file),
             path.resolve(uploadConfig.UPLOADS_FOLDER, file)
         );
+
         return file;
     }
+
     async deleteFile(file) {
         const filePath = path.resolve(uploadConfig.UPLOADS_FOLDER, file);
 
@@ -19,7 +21,7 @@ class DiskStorage {
             return;
         }
 
-        await fs.promises.unlick(filePath);
+        await fs.promises.unlink(filePath);
     }
 }
 
