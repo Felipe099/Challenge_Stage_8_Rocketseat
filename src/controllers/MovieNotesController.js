@@ -11,6 +11,7 @@ class MovieNotesController {
                 'Nota para o filme podem variar apenas de 1 até o 5'
             );
         }
+
         const [note_id] = await knex('movie_notes').insert({
             title,
             description,
@@ -18,11 +19,16 @@ class MovieNotesController {
             user_id,
         });
 
-        await knex('movie_tags').insert({
-            note_id,
-            name: tag,
-            user_id,
-        });
+        if (tag.length > 0) {
+            const tagsInsert = tag.map((name) => {
+                return {
+                    note_id,
+                    name,
+                    user_id,
+                };
+            });
+            await knex('movie_tags').insert(tagsInsert);
+        }
 
         return response.json();
     }
@@ -50,14 +56,10 @@ class MovieNotesController {
         const { title } = request.query;
         const user_id = request.user.id;
 
-
         const movie_notes = await knex('movie_notes')
             .where({ user_id })
             .whereLike('title', `%${title}%`)
             .orderBy('title');
-
-
-            console.log(title)
 
         const userTags = await knex('movie_tags').where({ user_id });
         const notesWithTags = movie_notes.map((note) => {
