@@ -36,12 +36,12 @@ class MovieNotesController {
     async show(request, response) {
         const { id } = request.params; //id da nota
 
-        const movie_notes = await knex('movie_notes').where({ id }).first();
-        const movie_tags = await knex('movie_tags')
+        const note = await knex('movie_notes').where({ id }).first();
+        const tags = await knex('movie_tags')
             .where({ note_id: id })
             .orderBy('name');
 
-        return response.json({ ...movie_notes, movie_tags });
+        return response.json({ ...note, tags });
     }
 
     async delete(request, response) {
