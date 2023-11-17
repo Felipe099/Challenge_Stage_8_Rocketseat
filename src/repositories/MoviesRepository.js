@@ -9,7 +9,17 @@ class MoviesRepository {
             user_id,
         });
 
-        return note_id
+        if (tag.length > 0) {
+            const tagsInsert = tag.map((name) => {
+                return {
+                    note_id,
+                    name,
+                    user_id,
+                };
+            });
+            await knex('movie_tags').insert(tagsInsert);
+        }
+        return note_id;
     }
 }
 
